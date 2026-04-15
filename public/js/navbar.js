@@ -1,0 +1,56 @@
+document.addEventListener('DOMContentLoaded', function() {
+    const navbar = document.getElementById('navbar');
+    const navContainer = document.getElementById('nav-container');
+    const logoUt = document.getElementById('logo-ut');
+    const logoIdead = document.getElementById('logo-idead');
+    const menuWrapper = document.getElementById('menu-wrapper');
+    
+    // Solución al parpadeo
+    const setBodyPadding = () => {
+        if (window.scrollY === 0) {
+            document.body.style.paddingTop = navbar.offsetHeight + 'px';
+        }
+    };
+    
+    setBodyPadding();
+    window.addEventListener('resize', setBodyPadding);
+
+    let isScrolled = false;
+
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 80 && !isScrolled) {
+            isScrolled = true;
+            
+            // Acomodar contenedor: De columna a fila (Mantenemos items-center siempre)
+            navContainer.classList.remove('flex-col', 'py-6', 'md:py-8', 'justify-center');
+            navContainer.classList.add('flex-row', 'justify-between', 'py-2', 'md:py-3'); 
+
+            // Acomodar menú: Quitar margen superior y alinear a la derecha
+            menuWrapper.classList.remove('mt-4', 'md:mt-6', 'w-full', 'justify-center');
+            menuWrapper.classList.add('mt-0', 'w-auto', 'justify-end');
+
+            // Achicar logos
+            logoUt.classList.remove('h-16', 'md:h-24');
+            logoUt.classList.add('h-10', 'md:h-12');
+
+            logoIdead.classList.remove('h-16', 'md:h-24');
+            logoIdead.classList.add('h-10', 'md:h-12');
+
+        } else if (window.scrollY < 40 && isScrolled) {
+            isScrolled = false;
+            
+            // Volver al estado gigante y centrado
+            navContainer.classList.add('flex-col', 'py-6', 'md:py-8', 'justify-center');
+            navContainer.classList.remove('flex-row', 'justify-between', 'py-2', 'md:py-3');
+
+            menuWrapper.classList.add('mt-4', 'md:mt-6', 'w-full', 'justify-center');
+            menuWrapper.classList.remove('mt-0', 'w-auto', 'justify-end');
+
+            logoUt.classList.add('h-16', 'md:h-24');
+            logoUt.classList.remove('h-10', 'md:h-12');
+
+            logoIdead.classList.add('h-16', 'md:h-24');
+            logoIdead.classList.remove('h-10', 'md:h-12');
+        }
+    });
+});
