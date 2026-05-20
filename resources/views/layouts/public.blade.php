@@ -37,6 +37,8 @@
                     class="text-gray-700 hover:text-red-800 transition tracking-wide font-bold">Inicio</a>
 
                 <a href="#" class="text-gray-700 hover:text-red-800 transition tracking-wide font-bold">Contacto</a>
+                <a href="{{ route('certificates.search') }}"
+                    class="text-gray-700 hover:text-red-800 transition tracking-wide font-bold">Certificados</a>
 
                 <a href="https://tuaulavirtual.ut.edu.co/"
                     class="text-gray-700 hover:text-red-800 transition tracking-wide font-bold">Tu Aula Virtual</a>

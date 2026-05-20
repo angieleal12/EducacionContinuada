@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EnrollmentController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeContentController;
+use App\Http\Controllers\CertificateController;
+
 
 // --- RUTA PÚBLICA ---
 // Aquí es donde los estudiantes verán los cursos
@@ -49,3 +51,21 @@ Route::post('/enrollments', [EnrollmentController::class, 'store'])->name('enrol
 // Rutas para editar los textos de la página principal
 Route::get('/admin/configuracion-inicio', [HomeContentController::class, 'edit'])->name('home.content.edit');
 Route::put('/admin/configuracion-inicio', [HomeContentController::class, 'update'])->name('home.content.update');
+
+// --- RUTAS PÚBLICAS DE CERTIFICADOS ---
+// 1. Mostrar el buscador
+Route::get('/certificados', [CertificateController::class, 'searchForm'])->name('certificates.search');
+// 2. Procesar la búsqueda
+Route::post('/certificados/buscar', [CertificateController::class, 'find'])->name('certificates.find');
+// 3. Descarga segura del PDF
+Route::get('/certificados/descargar/{verification_code}', [CertificateController::class, 'download'])->name('certificates.download');
+
+// --- RUTAS ADMINISTRATIVAS DE CERTIFICADOS ---
+Route::get('/admin/certificados', [CertificateController::class, 'index'])->name('admin.certificates.index');
+Route::get('/admin/certificados/crear', [CertificateController::class, 'create'])->name('admin.certificates.create');
+Route::post('/admin/certificados', [CertificateController::class, 'store'])->name('admin.certificates.store');
+Route::delete('/admin/certificados/{id}', [CertificateController::class, 'destroy'])->name('admin.certificates.destroy');
+
+// Ruta especial (AJAX) para el desplegable dinámico de categorías -> cursos
+Route::get('/admin/api/cursos-por-categoria/{category_id}', [CertificateController::class, 'getCourses']);
+Route::get('/admin/certificados/ver/{id}', [CertificateController::class, 'showPdf'])->name('admin.certificates.showPdf');
