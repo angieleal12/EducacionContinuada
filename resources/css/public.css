@@ -1,0 +1,22 @@
+/* ==========================================
+   Animación del Pop-up de Ofertas
+   ========================================== */
+@keyframes popupBounce {
+    0% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.animate-popup-bounce {
+    animation: popupBounce 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}

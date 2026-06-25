@@ -16,6 +16,7 @@ class Certificate extends Model
         'doc_type',
         'doc_number',
         'student_name',
+        'email',
         'file_path',
     ];
 

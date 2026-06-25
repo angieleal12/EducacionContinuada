@@ -7,7 +7,13 @@ use App\Models\HomeContent;
 
 
 class HomeContentController extends Controller
+
 {
+    public function index()
+    {
+      
+        return view('admin.home_content.index');
+    }
     // Muestra el formulario con los textos actuales
     public function edit()
     {

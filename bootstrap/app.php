@@ -13,10 +13,10 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         
-        // ★ AQUÍ ESTÁ LA MAGIA PARA LARAVEL 11 ★
+        // ★ AQUÍ ESTÁ LA MAGIA PARA LARAVEL 11/12 ★
         // Si el usuario ya está logueado e intenta ir al login, mándalo al Panel Admin.
         $middleware->redirectUsersTo(function (Request $request) {
-            return route('courses.index');
+            return route('admin.dashboard');
         });
 
     })

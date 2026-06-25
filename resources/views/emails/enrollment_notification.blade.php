@@ -4,60 +4,81 @@
 <head>
     <style>
     body {
-        font-family: sans-serif;
+        font-family: 'Arial', sans-serif;
         line-height: 1.6;
         color: #333;
+        background-color: #f4f4f4;
+        padding: 20px;
+    }
+
+    .container {
+        max-width: 600px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
 
     .header {
-        background: #b91c1c;
+        background: #8B0000;
         color: white;
         padding: 20px;
         text-align: center;
     }
 
     .content {
-        padding: 20px;
-        border: 1px solid #eee;
+        padding: 30px;
+        text-align: center;
     }
 
-    .section-title {
-        font-weight: bold;
-        color: #b91c1c;
-        border-bottom: 1px solid #eee;
+    .button {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #8B0000;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
         margin-top: 20px;
+        font-weight: bold;
+    }
+
+    .footer {
+        padding: 15px;
+        text-align: center;
+        font-size: 12px;
+        color: #777;
+        background-color: #eee;
     }
     </style>
 </head>
 
 <body>
-    <div class="header">
-        <h1>Nueva Inscripción Recibida</h1>
-        <p>Curso: {{ $formData['course_name'] }}</p>
-    </div>
+    <div class="container">
+        <div class="header">
+            <h2>NUEVA INSCRIPCIÓN</h2>
+        </div>
 
-    <div class="content">
-        <div class="section-title">1. DATOS PERSONALES</div>
-        <p><strong>Nombre:</strong> {{ $formData['student_name'] }}</p>
-        <p><strong>Correo:</strong> {{ $formData['student_email'] }}</p>
-        <p><strong>Celular:</strong> {{ $formData['phone'] }}</p>
-        <p><strong>Documento:</strong> {{ $formData['doc_type'] }} - {{ $formData['doc_number'] }}</p>
-        <p><strong>Dirección:</strong> {{ $formData['address'] }}</p>
+        <div class="content">
+            <p>Hola, Administración.</p>
+            <p>El sistema acaba de registrar una nueva solicitud de inscripción.</p>
 
-        <div class="section-title">2. PERFIL ACADÉMICO Y LABORAL</div>
-        <p><strong>¿Estudia actualmente?:</strong> {{ $formData['studying_now'] }}
-            @if(!empty($formData['current_university'])) (En: {{ $formData['current_university'] }}) @endif
-        </p>
-        <p><strong>¿Posee título?:</strong> {{ $formData['has_degree'] }}
-            @if(!empty($formData['degree_title'])) (Título: {{ $formData['degree_title'] }}) @endif
-        </p>
-        <p><strong>¿Es egresado UT?:</strong> {{ $formData['is_ut_graduate'] }}</p>
-        @if(!empty($formData['other_university']))
-        <p><strong>Otra Universidad:</strong> {{ $formData['other_university'] }}</p>
-        @endif
-        @if(!empty($formData['work_field']))
-        <p><strong>Campo Laboral:</strong> {{ $formData['work_field'] }}</p>
-        @endif
+            <div
+                style="background-color: #f9fafb; border-left: 4px solid #8B0000; padding: 15px; margin: 20px 0; text-align: left;">
+                <p style="margin: 0;"><strong>Persona Inscrita:</strong>
+                    {{ $formData['full_name'] ?? 'Nombre no disponible' }}</p>
+                <p style="margin: 5px 0 0 0;"><strong>Curso / Diplomado:</strong> Solicitud Pendiente</p>
+            </div>
+
+            <p>Por favor, ingresa al módulo administrativo (Servicio al Usuario) para revisar los documentos adjuntos y
+                aprobar o rechazar la solicitud.</p>
+
+            <a href="{{ url('/login') }}" class="button">Ir al Panel Administrativo</a>
+        </div>
+
+        <div class="footer">
+            &copy; {{ date('Y') }} Educación Continuada - Universidad del Tolima. Este es un mensaje automático.
+        </div>
     </div>
 </body>
 

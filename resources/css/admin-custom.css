@@ -1,0 +1,92 @@
+/* 1. Importación directa de las fuentes (Cambiamos a Poppins para más elegancia) */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Poppins:wght@400;500;600;700&display=swap');
+
+/* 2. Asignación de tipografías (Forzando el diseño sobre Tailwind) */
+body,
+p,
+span,
+div,
+input,
+textarea,
+select {
+    font-family: 'Inter', sans-serif !important;
+}
+
+/* Aplicamos Poppins a todos los títulos, botones y etiquetas */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.font-space,
+button,
+label {
+    font-family: 'Poppins', sans-serif !important;
+}
+
+/* 3. Animación de entrada general */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.3s ease-out forwards;
+}
+
+/* 4. Fix para el autocompletado del navegador en Modo Oscuro */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+    -webkit-text-fill-color: #e5e7eb !important;
+    -webkit-box-shadow: 0 0 0px 1000px #0f0c13 inset !important;
+    transition: background-color 5000s ease-in-out 0s;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* 5. Barra de desplazamiento (Scrollbar) estilo Dark Tech */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #0B090A;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #3f2a35;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #991b1b;
+}
+
+/* ==========================================
+   OCULTAR SCROLLBAR (Menú Lateral)
+   ========================================== */
+.custom-scrollbar {
+    -ms-overflow-style: none;
+    /* Oculta en Internet Explorer y Edge */
+    scrollbar-width: none;
+    /* Oculta en Firefox */
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+    display: none;
+    /* Oculta en Chrome, Safari y navegadores basados en Chromium */
+}

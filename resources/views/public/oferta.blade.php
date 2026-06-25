@@ -2,61 +2,6 @@
 
 @section('content')
 
-<style>
-.editor-content h1,
-.editor-content h2,
-.editor-content h3,
-.editor-content h4 {
-    font-weight: bold;
-    margin-bottom: 0.5rem;
-    color: #1f2937;
-}
-
-.editor-content h1 {
-    font-size: 2rem;
-}
-
-.editor-content h2 {
-    font-size: 1.5rem;
-}
-
-.editor-content h3 {
-    font-size: 1.25rem;
-}
-
-.editor-content p {
-    margin-bottom: 1rem;
-}
-
-.editor-content ul {
-    list-style-type: disc;
-    margin-left: 1.5rem;
-    margin-bottom: 1rem;
-}
-
-.editor-content ol {
-    list-style-type: decimal;
-    margin-left: 1.5rem;
-    margin-bottom: 1rem;
-}
-
-.editor-content a {
-    color: #b91c1c;
-    text-decoration: underline;
-    font-weight: bold;
-}
-
-.editor-content strong,
-.editor-content b {
-    font-weight: 900;
-}
-
-.editor-content em,
-.editor-content i {
-    font-style: italic;
-}
-</style>
-
 <div class="w-full relative shadow-md mb-10 overflow-hidden">
     <img src="{{ asset('images/BannerEdCont.png') }}" alt="Educación Continuada Universidad del Tolima"
         class="w-full h-auto md:h-[400px] object-cover block">
@@ -64,6 +9,7 @@
     <div class="absolute inset-0 bg-gradient-to-r  via-gray-900/60 to-gray-900/30 pointer-events-none">
     </div>
 </div>
+
 <div class="container mx-auto px-6 mb-12">
     <div class="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden">
 
@@ -137,14 +83,14 @@
     <div class="flex flex-wrap justify-center gap-2 mb-10">
         <a href="{{ route('public.oferta') }}#seccion-cursos"
             class="px-5 py-2 rounded-full border text-sm font-bold shadow-sm transition
-            {{ !request('category') ? 'bg-green-800 text-white border-green800' : 'bg-white text-gray-600 border-gray-200 hover:text-red-800 hover:border-red-400' }}">
+            {{ !request('category') ? 'bg-green-800 text-white border-green-800' : 'bg-white text-gray-600 border-gray-200 hover:text-red-800 hover:border-red-400' }}">
             Todos
         </a>
         @foreach($categories as $cat)
-        <a href="{{ route('public.oferta', ['category' => $cat->id]) }}#seccion-cursos"
+        <a href="{{ route('public.oferta', ['category' => $cat]) }}#seccion-cursos"
             class="px-5 py-2 rounded-full border text-sm font-bold shadow-sm transition
-            {{ request('category') == $cat->id ? 'bg-green-800 text-white border-green-800' : 'bg-white text-gray-600 border-gray-200 hover:text-red-800 hover:border-red-400' }}">
-            {{ $cat->label }}
+            {{ request('category') == $cat ? 'bg-green-800 text-white border-green-800' : 'bg-white text-gray-600 border-gray-200 hover:text-red-800 hover:border-red-400' }}">
+            {{ $cat }}
         </a>
         @endforeach
     </div>
@@ -164,7 +110,7 @@
             <div class="p-6 flex flex-col flex-grow text-center">
 
                 <span class="text-[10px] font-black text-red-700 uppercase tracking-widest mb-3 block">
-                    {{ $course->category->label }}
+                    {{ $course->category }}
                 </span>
 
                 <h3
@@ -192,4 +138,58 @@
         @endforelse
     </div>
 </div>
+
+@php
+$activePopups = \App\Models\Popup::where('is_active', true)->get();
+@endphp
+
+@if($activePopups->count() > 0)
+<div id="promo-popup"
+    class="fixed inset-0 z-[100] flex items-center justify-center bg-black bg-opacity-80 transition-opacity duration-300">
+
+    <div class="relative max-w-2xl w-[90%] mx-auto bg-transparent rounded-lg shadow-2xl animate-popup-bounce">
+
+        <button onclick="closePopup()"
+            class="absolute -top-4 -right-4 bg-red-700 text-white rounded-full w-10 h-10 flex items-center justify-center font-black text-xl hover:bg-red-800 shadow-lg border-2 border-white z-20 transition-transform hover:scale-110 cursor-pointer">
+            &times;
+        </button>
+
+        <div class="relative overflow-hidden rounded-xl border-4 border-white shadow-lg bg-white">
+
+            @foreach($activePopups as $index => $popup)
+            <div class="carousel-item {{ $index == 0 ? 'block' : 'hidden' }} w-full" data-index="{{ $index }}">
+                @if($popup->link)
+                <a href="{{ $popup->link }}" target="_blank" class="block w-full">
+                    <img src="{{ asset('storage/' . $popup->image_path) }}" alt="{{ $popup->title }}"
+                        class="w-full h-auto object-cover max-h-[80vh]">
+                </a>
+                @else
+                <img src="{{ asset('storage/' . $popup->image_path) }}" alt="{{ $popup->title }}"
+                    class="w-full h-auto object-cover max-h-[80vh]">
+                @endif
+            </div>
+            @endforeach
+
+            @if($activePopups->count() > 1)
+            <button onclick="prevPopup()"
+                class="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white w-10 h-10 flex items-center justify-center rounded-full hover:bg-opacity-80 transition z-10 font-bold text-lg">
+                &#10094;
+            </button>
+            <button onclick="nextPopup()"
+                class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white w-10 h-10 flex items-center justify-center rounded-full hover:bg-opacity-80 transition z-10 font-bold text-lg">
+                &#10095;
+            </button>
+
+            <div class="absolute bottom-4 left-0 right-0 flex justify-center space-x-2 z-10">
+                @foreach($activePopups as $index => $popup)
+                <span
+                    class="dot w-3 h-3 rounded-full bg-white bg-opacity-50 {{ $index == 0 ? 'bg-opacity-100 shadow' : '' }}"></span>
+                @endforeach
+            </div>
+            @endif
+        </div>
+
+    </div>
+</div>
+@endif
 @endsection

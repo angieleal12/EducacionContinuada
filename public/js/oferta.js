@@ -47,3 +47,59 @@ function toggleText(targetId, btn) {
         btn.innerHTML = 'Ver más ↓';
     }
 }
+document.addEventListener('DOMContentLoaded', function() {
+    let popup = document.getElementById('promo-popup');
+    if(popup && sessionStorage.getItem('popup_cerrado') === 'true') {
+        popup.style.display = 'none';
+    }
+});
+
+function closePopup() {
+    let popup = document.getElementById('promo-popup');
+    if (popup) {
+        popup.style.display = 'none';
+        sessionStorage.setItem('popup_cerrado', 'true');
+    }
+}
+
+// ---- Lógica del Carrusel ----
+let currentPopupIndex = 0;
+
+function showPopupSlide(index) {
+    let slides = document.querySelectorAll('.carousel-item');
+    let dots = document.querySelectorAll('.dot');
+    
+    if (slides.length === 0) return; // Si no hay imágenes, no hace nada
+
+    // Si llegamos al final, volvemos a la primera. Si retrocedemos desde la primera, vamos a la última.
+    if (index >= slides.length) currentPopupIndex = 0;
+    if (index < 0) currentPopupIndex = slides.length - 1;
+
+    // Ocultamos todas las imágenes y apagamos los puntos
+    slides.forEach(slide => {
+        slide.classList.add('hidden');
+        slide.classList.remove('block');
+    });
+    dots.forEach(dot => {
+        dot.classList.remove('bg-opacity-100');
+        dot.classList.add('bg-opacity-50');
+    });
+
+    // Mostramos solo la imagen actual y encendemos su punto
+    slides[currentPopupIndex].classList.remove('hidden');
+    slides[currentPopupIndex].classList.add('block');
+    if(dots.length > 0) {
+        dots[currentPopupIndex].classList.remove('bg-opacity-50');
+        dots[currentPopupIndex].classList.add('bg-opacity-100');
+    }
+}
+
+function nextPopup() {
+    currentPopupIndex++;
+    showPopupSlide(currentPopupIndex);
+}
+
+function prevPopup() {
+    currentPopupIndex--;
+    showPopupSlide(currentPopupIndex);
+}

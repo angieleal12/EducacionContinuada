@@ -50,7 +50,7 @@
         </div>
     </nav>
 
-    <main class="flex-grow">
+    <main id="main-content" class="flex-grow">
         @yield('content')
     </main>
 
@@ -73,6 +73,25 @@
     </footer>
 
     <script src="{{ asset('js/navbar.js') }}"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    @if(session('success'))
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        Swal.fire({
+            title: '¡Inscripción Exitosa!',
+            text: '{{ session("success") }}',
+            icon: 'success',
+            confirmButtonColor: '#8B0000',
+            confirmButtonText: 'Aceptar'
+        });
+    });
+    </script>
+    @endif
+
+    @stack('scripts')
+
 </body>
 
 </html>

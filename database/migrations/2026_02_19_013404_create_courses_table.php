@@ -12,9 +12,18 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('courses', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('category_id')->constrained()->onDelete('cascade');
+            $table->id();            
             $table->string('title');
+            
+            // --- ACTUALIZADO: Lista depurada dejando solo SEMINARIOS DE INGLES ---
+            $table->enum('category', [
+                'DIPLOMADOS DE OPCION DE GRADO',
+                'DIPLOMADOS DE PUBLICO GENERAL',
+                'SEMINARIOS',
+                'SEMINARIOS DE INGLES', 
+                'CURSOS'
+            ]);
+            
             $table->string('mode')->nullable();
             $table->integer('hours');
             $table->string('duration')->nullable();
@@ -27,6 +36,9 @@ return new class extends Migration
             // --- NUEVOS CAMPOS AGREGADOS ---
             $table->string('image_url')->nullable(); 
             $table->string('pdf_document')->nullable();
+            
+            // --- EL NUEVO CAMPO PARA LOS HORARIOS DINÁMICOS [ + ] ---
+            $table->json('schedules')->nullable();
             // -------------------------------
 
             $table->timestamps();

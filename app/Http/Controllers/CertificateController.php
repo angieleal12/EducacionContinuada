@@ -23,11 +23,13 @@ class CertificateController extends Controller
     {
         $request->validate([
             'doc_type' => 'required',
-            'doc_number' => 'required'
+            'doc_number' => 'required',
+            'email' => 'required|email' // Validación del correo
         ]);
 
         $certificates = Certificate::where('doc_type', $request->doc_type)
                                    ->where('doc_number', $request->doc_number)
+                                   ->where('email', $request->email) // Candado de seguridad
                                    ->with('course')
                                    ->orderBy('created_at', 'desc')
                                    ->get();
@@ -58,8 +60,38 @@ class CertificateController extends Controller
 
     public function create()
     {
-        $categories = Category::all();
-        return view('admin.certificates.create', compact('categories'));
+        return view('admin.certificates.create');
+    }
+    public function getStudentData($doc_number)
+    {
+        // Buscamos inscripciones APROBADAS con ese documento
+        $enrollments = \App\Models\Enrollment::where('doc_number', $doc_number)
+                                            ->where('status', 'Aprobado')
+                                            ->with('course')
+                                            ->get();
+
+        if ($enrollments->isEmpty()) {
+            return response()->json(['success' => false, 'message' => 'No se encontraron inscripciones aprobadas para este documento.']);
+        }
+
+        // Tomamos los datos personales de la primera inscripción que encontremos
+        $student = $enrollments->first();
+        
+        // Extraemos solo los cursos donde está aprobado
+        $courses = $enrollments->map(function($enrollment) {
+            return [
+                'id' => $enrollment->course->id,
+                'title' => $enrollment->course->title
+            ];
+        });
+
+        return response()->json([
+            'success' => true,
+            'doc_type' => $student->doc_type,
+            'student_name' => $student->full_name,
+            'email' => $student->personal_email,
+            'courses' => $courses
+        ]);
     }
 
     public function getCourses($category_id)
@@ -74,7 +106,8 @@ class CertificateController extends Controller
             'course_id' => 'required|exists:courses,id',
             'doc_type' => 'required|string',
             'doc_number' => 'required|string',
-            'student_name' => 'required|string|max:255',
+            'student_name' => 'required|string',
+            'email' => 'required|email',
             'pdf_file' => 'required|mimes:pdf|max:5120',
         ]);
 
@@ -85,10 +118,11 @@ class CertificateController extends Controller
             'doc_type' => $request->doc_type,
             'doc_number' => $request->doc_number,
             'student_name' => strtoupper($request->student_name),
+            'email' => strtolower($request->email), // Guardamos el correo
             'file_path' => $path,
         ]);
 
-        return redirect()->route('admin.certificates.index')->with('success', 'Certificado subido y protegido correctamente.');
+        return redirect()->route('admin.certificates.index')->with('success', 'Certificado subido y vinculado correctamente al estudiante.');
     }
 
     // NUEVA FUNCIÓN: Para ver el PDF en pantalla sin descargarlo

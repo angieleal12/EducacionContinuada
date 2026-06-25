@@ -21,7 +21,6 @@ return new class extends Migration
             $table->string('doc_type');
             $table->string('doc_number');
             $table->string('student_name');
-            
             // Ruta donde guardaremos el PDF de forma privada
             $table->string('file_path');
             
@@ -33,4 +32,5 @@ return new class extends Migration
     {
         Schema::dropIfExists('certificates');
     }
+    
 };

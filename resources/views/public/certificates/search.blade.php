@@ -5,7 +5,7 @@
 
     <div class="text-center mb-10">
         <h1 class="text-4xl font-black text-gray-900 mb-4 tracking-tight">Consulta de Certificados</h1>
-        <p class="text-gray-500">Ingresa tus datos de identidad para descargar los certificados de tus cursos
+        <p class="text-gray-500">Ingresa tus datos de identificación para descargar los certificados de tus cursos
             finalizados.</p>
     </div>
 
@@ -20,14 +20,31 @@
                 <label class="block text-xs font-bold text-gray-500 uppercase mb-2">Tipo de Documento</label>
                 <select name="doc_type" required
                     class="w-full border-gray-200 border-2 p-3.5 rounded-xl focus:border-red-800 focus:ring-0 outline-none transition-colors bg-gray-50 focus:bg-white">
+
                     <option value="" disabled {{ !isset($certificates) ? 'selected' : '' }}>Seleccione...</option>
-                    <option value="CC" {{ request('doc_type') == 'CC' ? 'selected' : '' }}>Cédula de Ciudadanía (CC)
+
+                    <option value="CC" {{ request('doc_type') == 'CC' ? 'selected' : '' }}>
+                        Cédula de Ciudadanía (CC)
                     </option>
-                    <option value="TI" {{ request('doc_type') == 'TI' ? 'selected' : '' }}>Tarjeta de Identidad (TI)
+
+                    <option value="TI" {{ request('doc_type') == 'TI' ? 'selected' : '' }}>
+                        Tarjeta de Identidad (TI)
                     </option>
-                    <option value="CE" {{ request('doc_type') == 'CE' ? 'selected' : '' }}>Cédula de Extranjería (CE)
+
+                    <option value="CE" {{ request('doc_type') == 'CE' ? 'selected' : '' }}>
+                        Cédula de Extranjería (CE)
                     </option>
-                    <option value="PA" {{ request('doc_type') == 'PA' ? 'selected' : '' }}>Pasaporte (PA)</option>
+
+                    <option value="PPT" {{ request('doc_type') == 'PPT' ? 'selected' : '' }}>
+                        Permiso de Protección Temporal (PPT)
+                    </option>
+
+                    <option value="PEP" {{ request('doc_type') == 'PEP' ? 'selected' : '' }}>
+                        Permiso Especial de Permanencia (PEP)
+                    </option>
+                    <option value="PA" {{ request('doc_type') == 'PA' ? 'selected' : '' }}>
+                        Pasaporte (PA)
+                    </option>
                 </select>
             </div>
 
@@ -35,6 +52,13 @@
                 <label class="block text-xs font-bold text-gray-500 uppercase mb-2">Número de Identificación</label>
                 <input type="text" name="doc_number" value="{{ request('doc_number') }}" required
                     placeholder="Ej: 111000222"
+                    class="w-full border-gray-200 border-2 p-3.5 rounded-xl focus:border-red-800 focus:ring-0 outline-none transition-colors bg-gray-50 focus:bg-white">
+            </div>
+            <div class="md:col-span-12 mt-2">
+                <label class="block text-xs font-bold text-gray-500 uppercase mb-2">Correo Electrónico (Registrado en la
+                    inscripción)</label>
+                <input type="email" name="email" value="{{ request('email') }}" required
+                    placeholder="Ej: estudiante@ut.edu.co"
                     class="w-full border-gray-200 border-2 p-3.5 rounded-xl focus:border-red-800 focus:ring-0 outline-none transition-colors bg-gray-50 focus:bg-white">
             </div>
 
@@ -66,9 +90,10 @@
                 class="bg-white p-6 rounded-2xl shadow-sm hover:shadow-md border border-gray-100 transition-all flex flex-col md:flex-row md:items-center justify-between gap-6 group">
 
                 <div class="flex-1">
+
                     <span
                         class="inline-block px-3 py-1 bg-gray-100 text-gray-600 font-bold text-[10px] uppercase tracking-widest rounded-full mb-3">
-                        {{ $cert->course->category->label ?? 'Certificado Oficial' }}
+                        {{ $cert->course->category ?? 'Certificado Oficial' }}
                     </span>
                     <h3
                         class="text-lg font-bold text-gray-900 leading-tight mb-2 group-hover:text-red-800 transition-colors">

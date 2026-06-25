@@ -45,8 +45,8 @@ class AuthController extends Controller
             // Regeneramos el ID de sesión para evitar robo de cookies
             $request->session()->regenerate();
 
-            // Redirigir al panel de control
-            return redirect()->intended(route('courses.index'));
+            // Redirigir al panel de control (Dashboard Principal)
+            return redirect()->intended(route('admin.dashboard'));
         }
 
         // D. SI FALLA LA CONTRASEÑA
